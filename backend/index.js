@@ -5,6 +5,9 @@ import { createClient } from "redis";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
+// ── Express App ───────────────────────────────────────
+const app = express();
+
 dotenv.config();
 
 // ── Database ──────────────────────────────────────────
@@ -55,9 +58,6 @@ try {
   process.exit(1);
 }
 
-// ── Express App ───────────────────────────────────────
-const app = express();
-
 // ── Middlewares ───────────────────────────────────────
 app.use(express.json());
 app.use(cookieParser());
@@ -88,6 +88,14 @@ app.get("/health", (req, res) => {
   res.status(200).json({
     status: "ok",
     redis: redisClient.isReady ? "connected" : "disconnected",
+  });
+});
+
+// ── Root Route ────────────────────────────────────────
+app.get("/", (req, res) => {
+  res.status(200).json({
+    message: "Server is running",
+    status: "OK",
   });
 });
 

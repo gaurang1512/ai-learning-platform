@@ -35,79 +35,77 @@ function Register() {
     }
   };
   return (
-    <section className="text-gray-600 body-font">
-      <div className="container px-5 py-24 mx-auto flex flex-wrap items-center">
-        <div className="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0">
-          <h1 className="title-font font-medium text-3xl text-gray-900">
-            Slow-carb next level shoindcgoitch ethical authentic, poko scenester
+    <section className="min-h-screen bg-slate-950 flex items-center justify-center p-4 relative overflow-hidden"
+      style={{
+        backgroundImage: "linear-gradient(#e2e8f0 1px, transparent 1px), linear-gradient(90deg, #e2e8f0 1px, transparent 1px)",
+        backgroundSize: "40px 40px",
+      }}
+    >
+      <div className="relative w-full max-w-4xl flex rounded-2xl overflow-hidden shadow-2xl border border-slate-800">
+        <div className="hidden lg:flex flex-col justify-between w-5/12 bg-gradient from-slate-900 via-slate-800 to-slate-900 p-10 border-r border-slate-700/50">
+          <h1 className="text-3xl font-bold text-white leading-snug">
+            Join Our Community of{" "}
+            <span className="text-amber-400">Lifelong Learners</span>
           </h1>
-          <p className="leading-relaxed mt-4">
-            Poke slow-carb mixtape knausgaard, typewriter street art gentrify
-            hammock starladder roathse. Craies vegan tousled etsy austin.
+          <p className="text-slate-400 text-sm leading-relaxed">
+            Create your account today and unlock a world of personalized
+            learning experiences tailored to your goals.
           </p>
         </div>
-        <form
-          className="lg:w-2/6 md:w-1/2 bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0"
-          onSubmit={submitHandler}
-        >
-          <h2 className="text-gray-900 text-lg font-medium title-font mb-5">
-            Sign Up
-          </h2>
+        <form onSubmit={submitHandler} className="flex-1 bg-slate-900 p-8 sm:p-10 space-y-5">
+          <h2 className="text-2xl font-bold text-white tracking-tight mb-2">Sign Up</h2>
 
-          <div className="relative mb-4">
-            <label htmlFor="email" className="leading-7 text-sm text-gray-600">
-              Name
-            </label>
+          <div className="space-y-1.5">
+            <label htmlFor="name" className="block text-xs font-semibold text-slate-400 uppercase tracking-widest">Full Name</label>
             <input
               type="text"
               id="name"
               name="name"
-              className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              placeholder="John Doe"
               required
+              className="w-full bg-slate-800 border border-slate-700 text-slate-100 placeholder-slate-500 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400/60 transition-all duration-200"
             />
           </div>
-          <div className="relative mb-4">
-            <label htmlFor="email" className="leading-7 text-sm text-gray-600">
-              Email
-            </label>
+          <div className="space-y-1.5">
+            <label htmlFor="email" className="block text-xs font-semibold text-slate-400 uppercase tracking-widest">Email</label>
             <input
               type="email"
               id="email"
               name="email"
-              className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="name@company.com"
               required
+              className="w-full bg-slate-800 border border-slate-700 text-slate-100 placeholder-slate-500 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400/60 transition-all duration-200"
             />
           </div>
-          <div className="relative mb-4">
-            <label
-              htmlFor="password"
-              className="leading-7 text-sm text-gray-600"
-            >
-              Password
-            </label>
+          <div className="space-y-1.5">
+            <label htmlFor="password" className="block text-xs font-semibold text-slate-400 uppercase tracking-widest">Password</label>
             <input
               type="password"
               id="password"
               name="password"
-              className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
               required
+              className="w-full bg-slate-800 border border-slate-700 text-slate-100 placeholder-slate-500 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400/60 transition-all duration-200"
             />
           </div>
           <button
-            className="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
             disabled={btnLoading}
+            className="w-full flex items-center justify-center bg-amber-400 hover:bg-amber-300 disabled:opacity-60 disabled:cursor-not-allowed text-slate-900 font-semibold rounded-xl px-4 py-3 text-sm transition-all duration-200 shadow-lg shadow-amber-400/20 active:scale-[0.98]"
           >
-            {btnLoading ? "Submiting..." : "Register"}
+            {btnLoading ? "Creating account..." : "Register"}
           </button>
-          <Link to="/login" className="text-xs text-gray-500 mt-3">
-            Already have an account? Sign In
-          </Link>
+          <div className="text-center">
+            <Link to="/login" className="text-sm text-slate-500 hover:text-amber-400 transition-colors duration-150">
+              Already have an account?{" "}
+              <span className="text-amber-400 font-semibold">Sign In</span>
+            </Link>
+          </div>
         </form>
       </div>
     </section>

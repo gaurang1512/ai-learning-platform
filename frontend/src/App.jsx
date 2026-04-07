@@ -12,12 +12,15 @@ import ForgotPassword from "./pages/public/ForgotPassword";
 import ResetPassword from "./pages/public/ResetPassword";
 import AppLayout from "./AppLayout";
 import DashBoard from "./pages/private/DashBoard";
+import ProgressPage from "./pages/private/ProgressPage";
+import QuizPage from "./pages/private/QuizPage";
 // navigation pages
 import Landing from "./pages/private/Landing";
 import LearningPathGenerator from "./pages/private/LearningPathGenerator";
 import MyLearningPathshs from "./pages/private/MyLearningPaths";
 import MyLearningPaths from "./pages/private/MyLearningPaths";
 import SingleLearningPath from "./pages/private/SingleLearningPath";
+import TopicDetail from "./pages/private/TopicDetails";
 
 const App = () => {
   const { isAuth, loading } = AppData();
@@ -76,7 +79,16 @@ const App = () => {
             path="/app/my-learning-path/:id"
             element={<SingleLearningPath />}
           />
-          <Route path="app/dashboard" element={<DashBoard />}></Route>
+          <Route
+            path="/app/generate/:learningPathId/:topicName"
+            element={<TopicDetail />}
+          />
+          <Route
+            path="/app/quiz/:learningPathId/:topicName"
+            element={<QuizPage />}
+          />
+          <Route path="/app/dashboard" element={<DashBoard />} />
+          <Route path="/app/progress" element={<ProgressPage />} />
         </Route>
       </Routes>
 

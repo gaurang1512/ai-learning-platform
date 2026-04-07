@@ -16,7 +16,12 @@ export const isAuth = async (req, res, next) => {
     const cacheUser = await redisClient.get(`user:${decodedData.id}`);
 
     if (cacheUser) {
-      req.user = JSON.parse(cacheUser);
+      const user = JSON.parse(cacheUser);
+      // Ensure id is present if _id is present for consistency
+      if (user._id && !user.id) {
+        user.id = user._id;
+      }
+      req.user = user;
       return next();
     }
 

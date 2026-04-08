@@ -61,13 +61,19 @@ try {
 // ── Middlewares ───────────────────────────────────────
 app.use(express.json());
 app.use(cookieParser());
+
+const allowedOrigins = ["http://localhost:5173", process.env.FRONTEND_URL];
+
 app.use(
   cors({
-    origin:
-      process.env.FRONTEND_URL || "http://import.meta.env.VITE_SERVER_URL",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS not allowed"));
+      }
+    },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
 

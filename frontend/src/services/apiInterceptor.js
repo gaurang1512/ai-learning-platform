@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const server = "http://localhost:5000";
+const server = "http://import.meta.env.VITE_SERVER_URL";
 
 const api = axios.create({
   baseURL: server,
@@ -71,7 +71,7 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;

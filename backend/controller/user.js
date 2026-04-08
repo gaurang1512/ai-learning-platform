@@ -6,7 +6,11 @@ import {
   verifyOtpSchema,
   resetPasswordSchema,
 } from "../config/zod.js";
-import { loginSchema, teacherRegisterSchema, studentRegisterSchema } from "../config/zod.js";
+import {
+  loginSchema,
+  teacherRegisterSchema,
+  studentRegisterSchema,
+} from "../config/zod.js";
 import { redisClient } from "../index.js";
 import { User } from "../models/User.js";
 import { TeacherProfile } from "../models/TeacherProfile.js";
@@ -74,7 +78,7 @@ export const registerUser = TryCatch(async (req, res) => {
   //hashing password
   const hashPassword = await bcrypt.hash(password, 10);
 
-  // (url)http://localhost:5173/(Token)dsbkhasfbefb and we will verify this and this will be stored in radis for 5 min
+  // (url)http://import.meta.env.VITE_SERVER_URL/(Token)dsbkhasfbefb and we will verify this and this will be stored in radis for 5 min
   const verifyToken = crypto.randomBytes(32).toString("hex");
 
   const verifyKey = `verify:${verifyToken}`;
@@ -119,12 +123,16 @@ export const registerTeacher = TryCatch(async (req, res) => {
       }));
       firstErrorMessage = allError[0]?.message || "Validation Error";
     }
-    return res.status(400).json({ message: firstErrorMessage, error: allError });
+    return res
+      .status(400)
+      .json({ message: firstErrorMessage, error: allError });
   }
   const { name, email, password } = validation.data;
   const rateLimitKey = `register-rate-limit:${req.ip}:${email}`;
   if (await redisClient.get(rateLimitKey)) {
-    return res.status(429).json({ message: "Too many requests, try again later" });
+    return res
+      .status(429)
+      .json({ message: "Too many requests, try again later" });
   }
   const existingUser = await User.findOne({ email });
   if (existingUser) {
@@ -145,7 +153,8 @@ export const registerTeacher = TryCatch(async (req, res) => {
   await sendMail({ email, subject, html });
   await redisClient.set(rateLimitKey, "true", { EX: 60 });
   res.json({
-    message: "If your email is valid, a verification link has been send.it will expire in 5 minutes",
+    message:
+      "If your email is valid, a verification link has been send.it will expire in 5 minutes",
   });
 });
 
@@ -164,12 +173,16 @@ export const registerStudent = TryCatch(async (req, res) => {
       }));
       firstErrorMessage = allError[0]?.message || "Validation Error";
     }
-    return res.status(400).json({ message: firstErrorMessage, error: allError });
+    return res
+      .status(400)
+      .json({ message: firstErrorMessage, error: allError });
   }
-  const { name, email, password} = validation.data;
+  const { name, email, password } = validation.data;
   const rateLimitKey = `register-rate-limit:${req.ip}:${email}`;
   if (await redisClient.get(rateLimitKey)) {
-    return res.status(429).json({ message: "Too many requests, try again later" });
+    return res
+      .status(429)
+      .json({ message: "Too many requests, try again later" });
   }
   const existingUser = await User.findOne({ email });
   if (existingUser) {
@@ -183,7 +196,6 @@ export const registerStudent = TryCatch(async (req, res) => {
     name,
     email,
     password: hashPassword,
-
   });
   await redisClient.set(verifyKey, datatoStore, { EX: 300 });
   const subject = "Verify your email for Student account";
@@ -191,7 +203,8 @@ export const registerStudent = TryCatch(async (req, res) => {
   await sendMail({ email, subject, html });
   await redisClient.set(rateLimitKey, "true", { EX: 60 });
   res.json({
-    message: "If your email is valid, a verification link has been send.it will expire in 5 minutes",
+    message:
+      "If your email is valid, a verification link has been send.it will expire in 5 minutes",
   });
 });
 //user varification
@@ -240,12 +253,10 @@ export const verifyEmail = TryCatch(async (req, res) => {
     if (userData.role === "teacher") {
       await TeacherProfile.create({
         user: newUser._id,
-        
       });
     } else {
       await StudentProfile.create({
         user: newUser._id,
-        
       });
     }
   } else {
@@ -362,7 +373,8 @@ export const verifyOtp = TryCatch(async (req, res) => {
     await redisClient.del(`otp:${email}`);
   }
   return res.status(410).json({
-    message: "OTP verification step removed. Please login with email and password.",
+    message:
+      "OTP verification step removed. Please login with email and password.",
   });
 });
 

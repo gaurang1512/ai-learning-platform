@@ -190,13 +190,14 @@ export const getForgotPasswordHtml = ({ email, otp }) => {
 
 export const getVerifyEmailHtml = ({ email, token }) => {
   const appName = process.env.APP_NAME || "Authentication App";
-  const baseUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+  const baseUrl =
+    process.env.FRONTEND_URL || "http://import.meta.env.VITE_SERVER_URL";
 
   const verifyUrl = `${baseUrl.replace(/\/+$/, "")}/token/${encodeURIComponent(
-    token
+    token,
   )}`;
 
-  //http://localhost:5173/token/dasfjnfhvvbbgsnjfndjk
+  //http://import.meta.env.VITE_SERVER_URL/token/dasfjnfhvvbbgsnjfndjk
 
   const html = `<!DOCTYPE html> 
 <html lang="en"> 

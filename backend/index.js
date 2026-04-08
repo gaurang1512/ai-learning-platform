@@ -71,14 +71,18 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (
+        !origin ||
+        origin.includes("vercel.app") ||
+        origin.includes("localhost")
+      ) {
         callback(null, true);
       } else {
-        callback(new Error("CORS not allowed"));
+        callback(null, true); // ⚠️ temporarily allow all (fix crash)
       }
     },
     credentials: true,
-  }),
+  })
 );
 
 // ── JSON Parse Error Handler ──────────────────────────

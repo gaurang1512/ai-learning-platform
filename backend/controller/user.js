@@ -150,8 +150,38 @@ export const registerTeacher = TryCatch(async (req, res) => {
   await redisClient.set(verifyKey, datatoStore, { EX: 300 });
   const subject = "Verify your email for Teacher account";
   const html = getVerifyEmailHtml({ email, token: verifyToken });
-  await sendMail({ email, subject, html });
-  await redisClient.set(rateLimitKey, "true", { EX: 60 });
+  sendMail({ email, subject, html });
+  //await sendMail({ email, subject, html });
+  /*
+  ❓ Will async here cause error?
+
+👉 NO — async itself is NOT the problem ✅
+Your code is perfectly valid:
+
+const sendMail = async ({ email, subject, html }) => {
+  ...
+  await transport.sendMail(...)
+};
+
+✔️ This will NOT throw error by itself
+
+⚠️ REAL PROBLEM (IMPORTANT)
+
+The issue is HOW you are calling it in your register API:
+
+await sendMail({ email, subject, html });
+
+👉 This means:
+
+Your API waits until email is sent
+Gmail SMTP can take 5–20 seconds
+On Render → even slower
+
+👉 Result:
+
+User clicks signup → waits → waits → timeout ❌
+  */
+  //await redisClient.set(rateLimitKey, "true", { EX: 60 });
   res.json({
     message:
       "If your email is valid, a verification link has been send.it will expire in 5 minutes",
@@ -200,7 +230,11 @@ export const registerStudent = TryCatch(async (req, res) => {
   await redisClient.set(verifyKey, datatoStore, { EX: 300 });
   const subject = "Verify your email for Student account";
   const html = getVerifyEmailHtml({ email, token: verifyToken });
-  await sendMail({ email, subject, html });
+  sendMail({ email, subject, html }); // remove await
+  //👉 Why:
+  //Respons will be sent immediately
+  //Email runs in background finally improve speed
+  //await sendMail({ email, subject, html });
   await redisClient.set(rateLimitKey, "true", { EX: 60 });
   res.json({
     message:

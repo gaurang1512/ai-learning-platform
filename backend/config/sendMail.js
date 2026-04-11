@@ -1,18 +1,10 @@
-import { createTransport } from "nodemailer";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendMail = async ({ email, subject, html }) => {
-  const transport = createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASSWORD,
-    },
-  });
-
-  await transport.sendMail({
-    from: process.env.SMTP_USER,
+  await resend.emails.send({
+    from: "onboarding@resend.dev",
     to: email,
     subject,
     html,

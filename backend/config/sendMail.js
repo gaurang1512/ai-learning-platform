@@ -1,21 +1,19 @@
-import nodemailer from "nodemailer";
+import * as Brevo from "@getbrevo/brevo";
 
-const transport = nodemailer.createTransport({
-  host: "smtp-relay.brevo.com",
-  port: 587,
-  auth: {
-    user: process.env.BREVO_USER, // your Brevo login email
-    pass: process.env.BREVO_SMTP_KEY, // SMTP key from Brevo dashboard
-  },
-});
+const client = new Brevo.TransactionalEmailsApi();
+client.setApiKey(
+  Brevo.TransactionalEmailsApiApiKeys.apiKey,
+  process.env.BREVO_API_KEY, // ← API key, NOT smtp key this time
+);
 
 const sendMail = async ({ email, subject, html }) => {
-  await transport.sendMail({
-    from: process.env.BREVO_USER,
-    to: email,
-    subject,
-    html,
-  });
+  const sendSmtpEmail = new Brevo.SendSmtpEmail();
+  sendSmtpEmail.to = [{ email }];
+  sendSmtpEmail.sender = { email: process.env.BREVO_USER, name: "StudyLLM" };
+  sendSmtpEmail.subject = subject;
+  sendSmtpEmail.htmlContent = html;
+
+  await client.sendTransacEmail(sendSmtpEmail);
 };
 
 export default sendMail;
